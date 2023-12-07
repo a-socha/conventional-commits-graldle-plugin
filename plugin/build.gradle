@@ -23,8 +23,8 @@ dependencies {
 gradlePlugin {
     plugins {
         greeting {
-            id = 'conventional.commits.greeting'
-            implementationClass = 'conventional.commits.ConventionalCommitsPlugin'
+            id = 'conventional.commits'
+            implementationClass = 'conventional.commits.plugin.ConventionalCommitsPlugin'
         }
     }
 }

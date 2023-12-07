@@ -10,20 +10,21 @@ class Git(
         private val gitDirectory: File? = null
 ) {
     private val commitMatcher: RawGitLogToCommitsMapper = RawGitLogToCommitsMapper()
-    fun allCommits(): List<Commit> = runCommand("git", "log", "--pretty=[%h] [%s] [%b]")
+    fun allCommits(): List<Commit> = runCommand("git", "log", GitConfig.commitViewFormat)
             .let { commitMatcher.fromRawGitLog(it) }
 
     fun commitsBetween(tagFrom: String, tagEnd: String? = null): List<Commit> =
-            runCommand("git", "log", "--pretty=[%h] [%s] [%b]", "$tagFrom..${tagEnd ?: ""}")
+            runCommand("git", "log", GitConfig.commitViewFormat, "$tagFrom..${tagEnd ?: ""}")
                     .let { commitMatcher.fromRawGitLog(it) }
 
     fun getLatestVersionTag(): String? {
-        return runCommand("git", "tag", "--sort=-version:refname", "-l", "v*.*.*").firstOrNull()
+        return runCommand("git", "tag", "--sort=-version:refname", "-l", GitConfig.tagVersionFormat).firstOrNull()
     }
 
     fun tagLatestCommit(tag: String) {
         runCommand("git", "tag", tag)
     }
+
     fun tagCommit(commit: Commit, tag: String) {
         runCommand("git", "tag", tag, commit.hash)
     }
@@ -54,5 +55,9 @@ class Git(
                 if (gitDirectory != null) directory(gitDirectory)
             }.start()
 
+}
 
+object GitConfig {
+    val commitViewFormat: String = "--pretty=[%h] [%s] [%b]"
+    val tagVersionFormat: String = "v*.*.*"
 }
