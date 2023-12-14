@@ -11,6 +11,10 @@ repositories {
     mavenCentral()
 }
 
+test {
+    testLogging.showStandardStreams = true
+}
+
 dependencies {
     testImplementation 'org.jetbrains.kotlin:kotlin-test-junit5'
     testImplementation('org.assertj:assertj-core:_')
@@ -40,6 +44,7 @@ configurations.functionalTestRuntimeOnly.extendsFrom(configurations.testRuntimeO
 tasks.register('functionalTest', Test) {
     testClassesDirs = sourceSets.functionalTest.output.classesDirs
     classpath = sourceSets.functionalTest.runtimeClasspath
+    testLogging.showStandardStreams = true
     useJUnitPlatform()
 }
 
