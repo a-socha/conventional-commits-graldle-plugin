@@ -15,5 +15,11 @@ class ConventionalCommitsPlugin : Plugin<Project> {
 
         project.tasks.register("newVersion", CreateNewVersionTask::class.java, config)
         project.tasks.register("printNewVersion", PrintNewVersionTask::class.java, config)
+
+        project.afterEvaluate {
+            ConventionalCommitConfigExtensionValidator().validateConventionalCommitConfig(config)?.let {
+                project.logger.error(it.message)
+            }
+        }
     }
 }

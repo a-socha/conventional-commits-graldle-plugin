@@ -20,3 +20,36 @@ open class ConventionalCommitConfigExtension {
     )
 }
 
+class ConventionalCommitConfigExtensionValidator() {
+    fun validateConventionalCommitConfig(config: ConventionalCommitConfigExtension): ExtensionValidationError? =
+        sameTypeCannotOccurTwice(config) ?: typeContainCharactersOtherThanLetters(config)
+
+    private fun sameTypeCannotOccurTwice(config: ConventionalCommitConfigExtension): ExtensionValidationError? =
+        typesThatOccursMoreThanOne(config)
+            .takeIfNotEmpty()
+            ?.collectToMessageFormat()
+            ?.let { "Following types occur more than one in configuration: $it" }
+            ?.let { ExtensionValidationError(it) }
+
+    private fun typesThatOccursMoreThanOne(config: ConventionalCommitConfigExtension) =
+        allTypes(config)
+            .groupBy { it }
+            .mapValues { it.value.size }
+            .filterValues { it > 1 }
+            .keys
+
+    private fun allTypes(config: ConventionalCommitConfigExtension): List<String> =
+        (config.major + config.minor + config.patch + config.none)
+
+    private fun typeContainCharactersOtherThanLetters(config: ConventionalCommitConfigExtension) =
+        allTypes(config).filter { !it.containOnlyLetters() }
+            .takeIfNotEmpty()
+            ?.collectToMessageFormat()
+            ?.let { "Following types contains other character than letters: $it" }
+            ?.let { ExtensionValidationError(it) }
+
+}
+
+private fun String.containOnlyLetters(): Boolean = this.matches(Regex("[a-zA-Z]+"))
+private fun <T> Collection<T>.takeIfNotEmpty(): List<T>? = takeIf { it.isNotEmpty() }?.toList()
+private fun List<String>.collectToMessageFormat(): String = joinToString(", ")
