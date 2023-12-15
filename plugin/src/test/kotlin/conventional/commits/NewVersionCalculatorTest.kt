@@ -71,8 +71,8 @@ class NewVersionCalculatorTest {
                 ),
                 arguments(
                         named("No build needed changes", listOf(
-                                commitWithSummary("build: not a breaking change"),
-                                commitWithSummary("ci(some): not a breaking change"),
+                                commitWithSummary("docs: not a breaking change"),
+                                commitWithSummary("docs(some): not a breaking change"),
                                 commitWithSummary("docs(some): not a breaking change"))
                         ),
                         NONE

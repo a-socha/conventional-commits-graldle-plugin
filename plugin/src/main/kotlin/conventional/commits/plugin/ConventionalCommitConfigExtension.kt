@@ -6,8 +6,8 @@ import conventional.commits.VersionIncrement
 open class ConventionalCommitConfigExtension {
     var major: List<String> = emptyList()
     var minor: List<String> = listOf("feat")
-    var patch: List<String> = listOf("fix", "chore", "style", "refactor", "perf", "test")
-    var none: List<String> = listOf("build", "ci", "docs")
+    var patch: List<String> = listOf("fix", "chore", "style", "refactor", "perf", "test", "ci", "build")
+    var none: List<String> = listOf("docs")
 
 
     internal fun toConfig() = ConventionalCommitConfig(
