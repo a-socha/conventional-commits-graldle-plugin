@@ -67,6 +67,4 @@ abstract class PluginFunctionalTestWithGitSupport {
         println(output.joinToString("\n"))
         return output
     }
-
-
 }

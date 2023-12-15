@@ -1,7 +1,7 @@
 package conventional.commits
 
-import conventional.commits.ConventionalCommitSetting.defaultIncrementMapping
 import conventional.commits.VersionIncrement.*
+import conventional.commits.plugin.ConventionalCommitConfigExtension
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Named.named
 import org.junit.jupiter.params.ParameterizedTest
@@ -13,7 +13,7 @@ import java.util.stream.Stream
 class NewVersionCalculatorTest {
 
     private val newVersionCalculator = NewVersionCalculator(
-            TypeToVersionMapping(defaultIncrementMapping)
+            ConventionalCommitConfigExtension().toConfig()
     )
 
     @ParameterizedTest

@@ -1,19 +1,20 @@
 package conventional.commits.tasks
 
-import conventional.commits.ConventionalCommitSetting
-import conventional.commits.Git
-import conventional.commits.NewVersionCalculator
-import conventional.commits.TypeToVersionMapping
+import conventional.commits.*
 import conventional.commits.features.CreateNewVersionFeature
+import conventional.commits.plugin.ConventionalCommitConfigExtension
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import org.gradle.api.tasks.options.Option
+import javax.inject.Inject
 
-open class CreateNewVersionTask : DefaultTask() {
+open class CreateNewVersionTask @Inject constructor(
+    conventionalCommitConfig: ConventionalCommitConfigExtension
+) : DefaultTask() {
     private val createNewVersionFeature: CreateNewVersionFeature = CreateNewVersionFeature(
-            Git(gitDirectory = project.projectDir),
-            NewVersionCalculator(TypeToVersionMapping(ConventionalCommitSetting.defaultIncrementMapping))
+        Git(gitDirectory = project.projectDir),
+        NewVersionCalculator(conventionalCommitConfig.toConfig())
     )
 
 
