@@ -48,7 +48,7 @@ class ConventionalCommitsPluginPrintNewVersionFunctionalTest : PluginFunctionalT
     override val buildFileContent: String
         get() = """
             plugins {
-                id('conventional.commits')
+                id('io.github.asocha.conventional.commits')
             }
         """.trimIndent()
 }

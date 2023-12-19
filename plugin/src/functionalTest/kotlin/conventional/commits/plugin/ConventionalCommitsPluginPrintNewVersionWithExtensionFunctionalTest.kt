@@ -12,7 +12,7 @@ class ConventionalCommitsPluginPrintNewVersionWithExtensionFunctionalTest : Plug
     override val buildFileContent: String
         get() = """
             plugins {
-                id('conventional.commits')
+                id('io.github.asocha.conventional.commits')
             }
             
             conventionalCommitsConfig {

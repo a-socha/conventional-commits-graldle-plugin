@@ -61,7 +61,7 @@ class ConventionalCommitsPluginExtensionValidationFunctionalTest {
         buildFile.writeText(
             """
                 plugins {
-                    id('conventional.commits')
+                    id('io.github.asocha.conventional.commits')
                 }
                 
                 $extension

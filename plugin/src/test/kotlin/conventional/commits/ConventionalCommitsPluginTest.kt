@@ -8,7 +8,7 @@ class ConventionalCommitsPluginTest {
     @Test
     fun `plugin registers task`() {
         val project = ProjectBuilder.builder().build()
-        project.plugins.apply("conventional.commits")
+        project.plugins.apply("io.github.asocha.conventional.commits")
 
         // Verify the result
         assertNotNull(project.tasks.findByName("newVersion"))
