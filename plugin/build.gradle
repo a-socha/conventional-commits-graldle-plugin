@@ -39,6 +39,14 @@ gradlePlugin {
     }
 }
 
+publishing {
+    repositories {
+        maven {
+            url = uri("../../local-gradle-plugin-repo")
+        }
+    }
+}
+
 sourceSets {
     functionalTest {
     }
