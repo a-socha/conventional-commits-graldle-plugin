@@ -33,11 +33,9 @@ abstract class PluginFunctionalTestWithGitSupport {
     }
 
     protected fun gitCommit(
-            subject: String,
-            body: String? = null
-    ) {
-        val message = body?.let { "$subject\n\n$it" } ?: subject
-        runBashCommand("git", "commit", "-m", message, "--allow-empty")
+        message: String
+    ): ProcessResult {
+        return runBashCommand("git", "commit", "-m", message, "--allow-empty")
     }
 
     protected fun gitTag(tagName: String) {
@@ -45,11 +43,11 @@ abstract class PluginFunctionalTestWithGitSupport {
     }
 
     protected fun listGitTag(): List<String> {
-        return runBashCommand("git", "tag")
+        return runBashCommand("git", "tag").successOutput
     }
 
     protected fun hashOfTaggedCommit(tag: String): String =
-            runBashCommand("git", "rev-list", "-n", "1", tag).singleOrNull() ?: ""
+        runBashCommand("git", "rev-list", "-n", "1", tag).successOutput.singleOrNull() ?: ""
 
     protected fun runGradleTask(vararg arguments: String): BuildResult {
         val runner = GradleRunner.create()
@@ -60,11 +58,37 @@ abstract class PluginFunctionalTestWithGitSupport {
         return runner.build()
     }
 
-    private fun runBashCommand(vararg command: String): List<String> {
-        val output = ProcessBuilder(command.toList())
-                .directory(projectDir)
-                .start().inputStream.reader().readLines()
-        println(output.joinToString("\n"))
-        return output
+    protected fun startGradle(): BuildResult {
+        val runner = GradleRunner.create()
+        runner.forwardOutput()
+        runner.withPluginClasspath()
+        runner.withProjectDir(projectDir)
+        return runner.build()
     }
+
+    private fun runBashCommand(vararg command: String): ProcessResult {
+        val result = ProcessBuilder(command.toList())
+            .directory(projectDir)
+            .start().result()
+        println(result.successOutput)
+        return result
+    }
+
 }
+
+@Suppress("ControlFlowWithEmptyBody")
+fun Process.result(): ProcessResult = let {
+    while (isAlive) {
+    }
+    ProcessResult(
+        status = it.exitValue(),
+        successOutput = it.inputStream.reader().readLines(),
+        errorOutput = it.errorStream.reader().readLines()
+    )
+}
+
+data class ProcessResult(
+    val status: Int,
+    val successOutput: List<String>,
+    val errorOutput: List<String>
+)

@@ -1,5 +1,6 @@
 package conventional.commits.plugin
 
+import conventional.commits.features.CreateGitHook
 import conventional.commits.tasks.CreateNewVersionTask
 import conventional.commits.tasks.PrintNewVersionTask
 import org.gradle.api.Plugin
@@ -20,6 +21,8 @@ class ConventionalCommitsPlugin : Plugin<Project> {
             ConventionalCommitConfigExtensionValidator().validateConventionalCommitConfig(config)?.let {
                 project.logger.error(it.message)
             }
+            CreateGitHook(project, config.toConfig(), config.commitErrorMessage).createGitGook()
+
         }
     }
 }
