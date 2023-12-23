@@ -44,7 +44,7 @@ class ConventionalCommitsPluginValidationHookFunctionalTest : PluginFunctionalTe
         assertThat(result.status).isNotEqualTo(0)
         assertThat(result.errorOutput).isEqualTo(
             listOf(
-                "[31mThe commit message is not compliant with Conventional Commit standard [39m",
+                "The commit message is not compliant with Conventional Commit standard",
                 "See: https://www.conventionalcommits.org/en/v1.0.0/#summary"
             )
         )

@@ -9,7 +9,7 @@ open class ConventionalCommitConfigExtension {
     var patch: List<String> = listOf("fix", "chore", "style", "refactor", "perf", "test", "ci", "build")
     var none: List<String> = listOf("docs")
 
-    var commitErrorMessage = "[31mThe commit message is not compliant with Conventional Commit standard [39m\nSee: https://www.conventionalcommits.org/en/v1.0.0/#summary"
+    var commitErrorMessage = "The commit message is not compliant with Conventional Commit standard\nSee: https://www.conventionalcommits.org/en/v1.0.0/#summary"
 
 
     internal fun toConfig() = ConventionalCommitConfig(
